@@ -36,7 +36,7 @@ class PaymentController extends Controller
         $response = Http::withToken($token)->post(env('QR_REQUEST_URL'), [
             'merchantId'  => $order->merchantId,
             'orderId'     => $order->orderId,
-            'orderAmount' => $order->orderAmount * 0.63,
+            'orderAmount' => $order->orderAmount,
             'channelType' => $order->channelType,
             'notifyUrl'   => $order->notifyUrl,
             'sign'        => $order->sign,
