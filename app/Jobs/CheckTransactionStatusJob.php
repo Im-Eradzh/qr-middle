@@ -16,13 +16,16 @@ class CheckTransactionStatusJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10; // Retry 10 times if notification fails
+    public $backoff = 30; // Wait 30 seconds before retrying
+
     protected $order;
     protected $attempt;
 
     public function __construct(Order $order, int $attempt = 1)
     {
         $this->order = $order;
-        $this->attempt = max(1, $attempt);
+        $this->attempt = $attempt;
     }
 
     public function handle(): void
@@ -56,7 +59,7 @@ class CheckTransactionStatusJob implements ShouldQueue
             return;
         }
 
-        $status = strtolower($data['status']); // Convert status to lowercase for consistency
+        $status = strtolower($data['status']);
         $message = $data['message'] ?? 'Unknown status';
         $redirectUrl = $this->order->returnUrl;
 
@@ -76,7 +79,6 @@ class CheckTransactionStatusJob implements ShouldQueue
             CheckTransactionStatusJob::dispatch($this->order, $this->attempt + 1)
                 ->delay(now()->addSeconds($delay));
         } else {
-            // Mark as failed after max retries
             $this->order->update(['status' => 'failed']);
             Log::info("Order {$this->order->id} transaction failed after max retries.");
             $this->sendNotification($data, false);
@@ -110,10 +112,22 @@ class CheckTransactionStatusJob implements ShouldQueue
 
         if ($response->successful() && ($response->json()['code'] ?? 500) == 200) {
             Log::info("Notified merchant successfully for order {$this->order->id}");
+            $this->order->update(['notified' => true]); // ✅ Update flag
         } else {
             Log::error("Failed to notify merchant for order {$this->order->id}", ['response' => $response->json()]);
+            
+            // Retry notification if it fails
+            if ($this->attempt < 10) {
+                Log::warning("Retrying notification for order {$this->order->id}, attempt {$this->attempt} in 30 seconds.");
+                CheckTransactionStatusJob::dispatch($this->order, $this->attempt + 1)
+                    ->delay(now()->addSeconds(30));
+            } else {
+                Log::error("Notification failed after max retries for order {$this->order->id}. Marking as server not reachable.");
+                $this->order->update(['status' => 'failed']);
+            }
         }
     }
+
 
     private function generateSignature(array $data, string $signKey): string
     {

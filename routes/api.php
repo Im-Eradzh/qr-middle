@@ -5,3 +5,4 @@ use App\Http\Controllers\QrRequestController;
 
 
 Route::post('request-qr', [QrRequestController::class, 'requestQr']);
+Route::post('order-status', [QrRequestController::class, 'orderStatus']);
