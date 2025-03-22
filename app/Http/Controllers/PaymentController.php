@@ -58,7 +58,7 @@ class PaymentController extends Controller
         $order->update(['transaction_refno' => $transactionRefNo, 'status' => 'pending']);
 
         // Dispatch job for transaction status check
-        CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(30));
+        CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(10));
 
         // Generate QR Code
         $builder = new Builder(
