@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class QrRequestController extends Controller
 {
@@ -27,6 +29,24 @@ class QrRequestController extends Controller
                 'notifyUrl'   => 'required|url|max:255',            
                 'returnUrl'   => 'required|url|max:255',
             ]);
+
+            $authToken = $this->getApiToken();
+
+            if (!$authToken) {
+                return response()->json(['error' => 'Failed to retrieve API token'], 500);
+            }  
+
+             // Fetch the URL from GET_URL_API
+            $urlResponse = Http::withToken($authToken)->get(env('GET_URL_API'));
+
+            if (!$urlResponse->successful()) {
+                return response()->json(['error' => 'Failed to fetch URL from API', 'details' => $urlResponse->json()], 500);
+            }
+
+            $apiUrl = $urlResponse->json()['url'] ?? null;
+            if (!$apiUrl) {
+                return response()->json(['error' => 'No URL returned from API'], 500);
+            }
 
             // Validate merchant credentials
             $merchant = Merchant::where('merchant_id', $validatedData['merchantId'])
@@ -59,11 +79,14 @@ class QrRequestController extends Controller
             ]);
             DB::commit();
 
+            // Construct the final redirect URL
+            $redirectUrl = rtrim($apiUrl, '/') . "/product/{$token}";
+
             // Return structured response
             return response()->json([
                 'success' => true,
                 'message' => 'QR code generated successfully.',
-                'redirect_url' => route('order.page', ['token' => $token])
+                'redirect_url' => $redirectUrl
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -80,6 +103,29 @@ class QrRequestController extends Controller
                 'error' => 'An error occurred while processing your request. Please try again later.',
             ], 500);
         }
+    }
+
+    private function getApiToken()
+    {
+        if (Cache::has('api_access_token')) {
+            return Cache::get('api_access_token');
+        }
+
+        $response = Http::post(env('QR_LOGIN_URL'), [
+            'email'    => env('QR_USERNAME'),
+            'password' => env('QR_PASSWORD'),
+        ]);
+
+        if ($response->successful()) {
+            $tokenData = $response->json();
+            $token = $tokenData['access_token'];
+            $expiresIn = $tokenData['expires_in'] ?? 3600;
+
+            Cache::put('api_access_token', $token, now()->addSeconds($expiresIn - 60));
+            return $token;
+        }
+
+        return null;
     }
 }
 
