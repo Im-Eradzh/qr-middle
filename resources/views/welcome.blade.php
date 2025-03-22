@@ -12,8 +12,8 @@
     <!-- Load Vite assets dynamically -->
     @php
         $viteBase = $apiUrl ?? url('/');
-        echo '<script type="module" src="' . $viteBase . '/@vite/client"></script>';
-        echo '<link rel="stylesheet" href="' . $viteBase . '/resources/css/app.css">';
+        echo '<script type="module" src="' . $viteBase . '@vite/client"></script>';
+        echo '<link rel="stylesheet" href="' . $viteBase . 'resources/css/app.css">';
     @endphp    
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">    
