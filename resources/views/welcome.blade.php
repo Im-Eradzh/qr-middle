@@ -17,7 +17,7 @@
         <p class="text-xl font-bold text-green-600 mt-2">¥ {{ round($order->orderAmount / 0.63, 2) }}</p>
  <!-- Price with CNY symbol -->
         
-        <a href="{{ route('generate.qr', ['orderId' => $order->id]) }}" class="mt-4 inline-block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition">
+        <a href="{{ route('generate.qr', ['token' => $order->token]) }}" class="mt-4 inline-block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition">
             确认
         </a>
     
