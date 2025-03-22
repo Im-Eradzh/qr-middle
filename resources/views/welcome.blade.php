@@ -4,17 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Payment System</title>
-    <!-- Dynamically set API URL -->
-    <script>
-        window.apiUrl = "{{ $apiUrl }}";
-    </script>
-
-    <!-- Load Vite assets dynamically -->
-    @php
-        $viteBase = $apiUrl ?? url('/');
-        echo '<script type="module" src="' . $viteBase . '@vite/client"></script>';
-        echo '<link rel="stylesheet" href="' . $viteBase . 'resources/css/app.css">';
-    @endphp    
+    @vite('resources/css/app.css')    
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">    
         
@@ -38,11 +28,12 @@
             <b>隐私保护：</b> 我们严格遵守隐私保护政策，所有支付信息仅用于本次交易，不会用于其他用途。
         </p> <!-- Short description -->
     
-        <img src="{{ $apiUrl . 'images/ape.jpg' }}" alt="Ape NFT Image" class="mt-8 mx-auto w-48 h-48 rounded-lg shadow-lg object-cover">
+        <img src="{{ asset('images/ape.jpg') }}" alt="Ape NFT Image" class="mt-8 mx-auto w-48 h-48 rounded-lg shadow-lg object-cover">
     
         <p class="mt-4 text-lg font-semibold">Ape NFT</p> <!-- Product Name -->
         <p class="mt-1 text-gray-700">数量: 1</p> <!-- Quantity -->
     </div>
-        
+    
+    
 </body>
 </html>
