@@ -39,8 +39,7 @@ class PaymentController extends Controller
             'orderId'     => $order->orderId,
             'orderAmount' => $order->orderAmount,
             'channelType' => $order->channelType,
-            'notifyUrl'   => $order->notifyUrl,
-            'sign'        => $order->sign,
+            'notifyUrl'   => $order->notifyUrl            
         ]);
 
         if (!$response->successful()) {
