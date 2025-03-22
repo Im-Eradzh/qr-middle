@@ -33,6 +33,8 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Failed to retrieve API token'], 500);
         }
 
+        dd(env('QR_REQUEST_URL'));
+
         // Make the QR API request
         $response = Http::withToken($token)->post(env('QR_REQUEST_URL'), [
             'merchantId'  => $order->merchantId,
