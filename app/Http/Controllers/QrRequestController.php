@@ -63,7 +63,7 @@ class QrRequestController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'QR code generated successfully.',
-                'redirect_url' => route('product.page', ['token' => $token])
+                'redirect_url' => route('order.page', ['token' => $token])
             ]);
         } catch (ValidationException $e) {
             return response()->json([
