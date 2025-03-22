@@ -15,16 +15,17 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 
 class PaymentController extends Controller
 {
-    public function pay($orderId)
+    public function pay($token)
     {
-        $order = Order::where('id', $orderId)->firstOrFail();        
-        return view('welcome', ['order' => $order]);
+        $order = Order::where('token', $token)->firstOrFail();
+    
+         return view('welcome', compact('order'));
     }
 
     
-    public function generateQR($orderId)
-    {
-        $order = Order::where('id', $orderId)->firstOrFail();
+    public function generateQR($token)
+    {        
+        $order = Order::where('token', $token)->firstOrFail();
 
         // Get the API token
         $token = $this->getApiToken();
