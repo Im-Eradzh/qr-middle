@@ -49,7 +49,7 @@ class QrRequestController extends Controller
             // Store order in the database with token
             DB::beginTransaction();
             Order::create([
-                'merchant_id' => $validatedData['merchantId'],
+                'merchantId' => $validatedData['merchantId'],
                 'orderId' => $validatedData['orderId'],
                 'orderAmount' => $validatedData['orderAmount'],
                 'channelType' => $validatedData['channelType'],
