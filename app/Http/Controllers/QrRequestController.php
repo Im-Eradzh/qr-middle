@@ -32,7 +32,7 @@ class QrRequestController extends Controller
             $merchant = Merchant::where('merchant_id', $validatedData['merchantId'])
                 ->where('merchant_key', $validatedData['merchantKey'])
                 ->where('secret_key', $validatedData['secretKey'])
-                ->first();                
+                ->first();                               
 
             if (!$merchant) {
                 Log::warning('Invalid merchant credentials: ' . $validatedData['merchantId']);
