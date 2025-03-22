@@ -70,7 +70,7 @@ class CheckTransactionStatusJob implements ShouldQueue
 
         // Retry mechanism (Max 3 retries)
         if ($this->attempt < 4) {
-            $delay = 7; // Retry every 7 seconds
+            $delay = 5; // Retry every 7 seconds
             Log::info("Transaction still pending for Order {$this->order->id}, retrying attempt {$this->attempt} in {$delay} seconds");
 
             CheckTransactionStatusJob::dispatch($this->order, $this->attempt + 1)

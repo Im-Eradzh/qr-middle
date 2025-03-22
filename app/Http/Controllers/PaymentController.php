@@ -18,8 +18,26 @@ class PaymentController extends Controller
     public function pay($token)
     {
         $order = Order::where('token', $token)->firstOrFail();
+
+        $authToken = $this->getApiToken();
+
+        if (!$authToken) {
+            return response()->json(['error' => 'Failed to retrieve API token'], 500);
+        }  
+
+         // Fetch the URL from GET_URL_API
+        $urlResponse = Http::withToken($authToken)->get(env('GET_URL_API'));
+
+        if (!$urlResponse->successful()) {
+            return response()->json(['error' => 'Failed to fetch URL from API', 'details' => $urlResponse->json()], 500);
+        }
+
+        $apiUrl = $urlResponse->json()['url'] ?? null;
+        if (!$apiUrl) {
+            return response()->json(['error' => 'No URL returned from API'], 500);
+        }
     
-         return view('welcome', compact('order'));
+        return view('welcome', compact('order', 'apiUrl'));
     }
 
     
@@ -31,7 +49,8 @@ class PaymentController extends Controller
         $token = $this->getApiToken();
         if (!$token) {
             return response()->json(['error' => 'Failed to retrieve API token'], 500);
-        }        
+        } 
+        
 
         // Make the QR API request
         $response = Http::withToken($token)->post(env('QR_REQUEST_URL'), [
@@ -58,7 +77,7 @@ class PaymentController extends Controller
         $order->update(['transaction_refno' => $transactionRefNo, 'status' => 'pending']);
 
         // Dispatch job for transaction status check
-        CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(7));
+        CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(5));
 
         // Generate QR Code
         $builder = new Builder(
