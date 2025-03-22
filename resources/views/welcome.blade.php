@@ -17,9 +17,13 @@
         <p class="text-xl font-bold text-green-600 mt-2">¥ {{ round($order->orderAmount / 0.63, 2) }}</p>
  <!-- Price with CNY symbol -->
         
-        <a href="{{ route('generate.qr', ['token' => $order->token]) }}" class="mt-4 inline-block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition">
+        <a href="{{ route('generate.qr', ['token' => $order->token]) }}" 
+            class="mt-4 inline-block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition text-center"
+            x-data="{ processing: false }"
+            x-on:click.prevent="processing = true; $event.target.classList.add('opacity-50', 'cursor-not-allowed'); $event.target.innerText = '处理中...'; window.location = $event.target.href"
+            x-bind:disabled="processing">
             确认
-        </a>
+        </a> <!-- Confirm Button -->
     
         <p class="mt-10 text-gray-600 text-sm">
             <b>隐私保护：</b> 我们严格遵守隐私保护政策，所有支付信息仅用于本次交易，不会用于其他用途。
