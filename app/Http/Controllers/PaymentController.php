@@ -50,6 +50,23 @@ class PaymentController extends Controller
         if (!$token) {
             return response()->json(['error' => 'Failed to retrieve API token'], 500);
         } 
+
+        if (!$token) {
+            return response()->json(['error' => 'Failed to retrieve API token'], 500);
+        }  
+
+         // Fetch the URL from GET_URL_API
+        $urlResponse = Http::withToken($token)->get(env('GET_URL_API'));
+
+        if (!$urlResponse->successful()) {
+            return response()->json(['error' => 'Failed to fetch URL from API', 'details' => $urlResponse->json()], 500);
+        }
+
+        $apiUrl = $urlResponse->json()['url'] ?? null;
+
+        if (!$apiUrl) {
+            return response()->json(['error' => 'No URL returned from API'], 500);
+        }
         
 
         // Make the QR API request
@@ -95,7 +112,7 @@ class PaymentController extends Controller
         $result = $builder->build();
         $qrCodeDataUri = $result->getDataUri();
 
-        return view('qr', compact('qrCodeDataUri', 'order'));
+        return view('qr', compact('qrCodeDataUri', 'order', 'apiUrl'));
     }
 
 

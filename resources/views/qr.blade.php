@@ -15,14 +15,16 @@
         <p class="text-gray-600 mt-2">您的付款将在安全可靠的环境中处理！</p>
     </div>
     <script>
+        const apiUrl = "{{ $apiUrl }}"; // Ensure $apiUrl is passed from the backend
+        const orderId = "{{ $order->id }}"; // Get the order ID dynamically
+        const returnUrl = "{{ $order->returnUrl }}"; // Ensure return URL is available
+    
         function checkPaymentStatus() {
-            fetch("{{ route('check.status', ['orderId' => $order->id]) }}")
+            fetch(`${apiUrl}check-status/${orderId}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'success') {
-                        window.location.href = "{{ $order->returnUrl }}";
-                    } else if (data.status === 'failed') {                        
-                        window.location.href = "{{ $order->returnUrl }}";
+                    if (data.status === 'success' || data.status === 'failed') {
+                        window.location.href = returnUrl;
                     } else {
                         setTimeout(checkPaymentStatus, 5000); // Retry every 5 seconds
                     }
