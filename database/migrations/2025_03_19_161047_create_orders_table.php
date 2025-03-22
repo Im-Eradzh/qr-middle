@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('returnUrl')->nullable();
             $table->string('transaction_refno')->nullable();
             $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
+            $table->boolean('notified')->default(false);
+            $table->string('token');
             $table->timestamps();
         });
     }
