@@ -33,7 +33,7 @@
                 .catch(error => console.error("Error checking payment status:", error));
         }
     
-        setTimeout(checkPaymentStatus, 5000);
+        setTimeout(checkPaymentStatus, 3000);
     </script>
 </body>
 </html>
