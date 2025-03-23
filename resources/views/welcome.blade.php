@@ -36,10 +36,13 @@
     </div>
     
     <script>
+        var apiUrl = @json($apiUrl);
+        var orderToken = @json($order->token);
+
         document.addEventListener('DOMContentLoaded', function () {
             let button = document.getElementById('confirm-btn');
 
-            fetch(`${apiUrl}generate-qr/${order.token}`)
+            fetch(`${apiUrl}generate-qr/${orderToken}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -52,7 +55,7 @@
                                 button.innerText = `${countdown} 秒后跳转...`;
                             } else {
                                 clearInterval(interval);
-                                window.location.href = `${apiUrl}show-qr/${order.token}`;
+                                window.location.href = `${apiUrl}show-qr/${orderToken}`;
                             }
                         }, 1000);
                     } else {
