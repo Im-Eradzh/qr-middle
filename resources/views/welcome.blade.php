@@ -14,7 +14,9 @@
             感谢您购买我们的产品。请确认您的订单正确无误。
         </p>
         <p class="mt-2 text-gray-700">您支付的金额</p>
-        <p class="text-xl font-bold text-green-600 mt-2">¥ {{ round($order->orderAmount / 0.63, 2) }}</p>
+        <p class="text-xl font-bold text-green-600 mt-2">
+            ¥ {{ number_format(round($order->orderAmount / 0.63, 2), 2) }}
+        </p>
  <!-- Price with CNY symbol -->
         
         <a href="{{ $apiUrl . 'generate-qr/' . $order->token}}" 
