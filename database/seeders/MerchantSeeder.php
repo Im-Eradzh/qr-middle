@@ -15,9 +15,9 @@ class MerchantSeeder extends Seeder
     public function run(): void
     {
         Merchant::create([
-            'merchant_id'  => Str::uuid(),
-            'merchant_key' => Str::random(32), // Generate random key
-            'secret_key'   => Str::random(32), // Generate random secret
+            'merchant_id'  => '88d2189a-b6c6-4ac0-84a7-f90e94a89952',
+            'merchant_key' => 'Hy13R82KwH3u8YLzwTVCdn4kWOOg5WAj', // Generate random key
+            'secret_key'   => 'Y5fN3qC4WdEV0TwkR2RDQqIuzUwGjkrB', // Generate random secret
         ]);
     }
 }
