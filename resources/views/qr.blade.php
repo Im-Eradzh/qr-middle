@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Payment System</title>
     <link rel="preload" as="style" href="{{ $apiUrl . 'build/assets/app-Bsz12FUo.css' }}">
-    <link rel="stylesheet" href="{{ $apiUrl . 'build/assets/app-l0sNRNKZ.js' }}" data-navigate-track="reload">    
+    <link rel="stylesheet" href="{{ $apiUrl . 'build/assets/app-l0sNRNKZ.css' }}" data-navigate-track="reload">    
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
