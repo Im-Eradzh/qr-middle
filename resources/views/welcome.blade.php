@@ -39,7 +39,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             let button = document.getElementById('confirm-btn');
 
-            fetch('{{ route("generate-qr", ["token" => $order->token]) }}')
+            fetch(`${apiUrl}generate-qr/${order->token}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -52,7 +52,7 @@
                                 button.innerText = `${countdown} 秒后跳转...`;
                             } else {
                                 clearInterval(interval);
-                                window.location.href = '{{ route("show-qr", ["token" => $order->token]) }}';
+                                window.location.href = `${apiUrl}show-qr/${order.token}`;
                             }
                         }, 1000);
                     } else {
