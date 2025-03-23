@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Payment System</title>
-    @vite('resources/css/app.css')    
+    <link rel="preload" as="style" href="{{ $apiUrl . 'build/assets/app-DQjzOnkb.css' }}">
+    <link rel="stylesheet" href="{{ $apiUrl . 'build/assets/app-DQjzOnkb.css' }}" data-navigate-track="reload">
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">    
         
