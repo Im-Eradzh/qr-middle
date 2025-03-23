@@ -27,7 +27,7 @@
                     if (data.status === 'success' || data.status === 'failed') {
                         window.location.href = returnUrl;
                     } else {
-                        setTimeout(checkPaymentStatus, 5000); // Retry every 5 seconds
+                        setTimeout(checkPaymentStatus, 3000); // Retry every 3 seconds
                     }
                 })
                 .catch(error => console.error("Error checking payment status:", error));
