@@ -39,7 +39,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             let button = document.getElementById('confirm-btn');
 
-            fetch(`${apiUrl}generate-qr/${order->token}`)
+            fetch(`${apiUrl}generate-qr/${order.token}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
