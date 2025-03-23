@@ -16,6 +16,7 @@ class Order extends Model
         'returnUrl',
         'transaction_refno',
         'status',
-        'token'
+        'token',
+        'qr_data'
     ];
 }
