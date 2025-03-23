@@ -46,7 +46,9 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
 
-        return view('welcome', compact('order'))->with('apiUrl', $this->apiUrl);
+        $apiUrl = $this->apiUrl;
+
+        return view('welcome', compact('order', 'apiUrl'));
     }
 
     public function generateQR($token)
@@ -98,6 +100,7 @@ class PaymentController extends Controller
         if (!$this->apiUrl) {
             return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
+        $apiUrl = $this->apiUrl;
 
         if (!$order->qr_data) {
             return redirect()->route('generate-qr', ['token' => $token]);
@@ -120,7 +123,7 @@ class PaymentController extends Controller
 
         CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(5));
 
-        return view('qr', compact('qrCodeDataUri', 'order'))->with('apiUrl', $this->apiUrl);
+        return view('qr', compact('qrCodeDataUri', 'order', 'apiUrl'));
     }
 
     private function getApiToken()

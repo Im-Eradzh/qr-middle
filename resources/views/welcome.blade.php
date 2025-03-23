@@ -29,7 +29,7 @@
             <b>隐私保护：</b> 我们严格遵守隐私保护政策，所有支付信息仅用于本次交易，不会用于其他用途。
         </p>
     
-        <img src="{{ $apiUrl . "images/product.jpg" }}" alt="Image" class="mt-8 mx-auto w-48 h-48 rounded-lg shadow-lg object-cover">
+        <img src="{{ $apiUrl . "images/lucky-painting.webp" }}" alt="Image" class="mt-8 mx-auto w-48 h-48 rounded-lg shadow-lg object-cover">
     
         <p class="mt-4 text-lg font-semibold">鸿运当头国画山水画正方形客厅旭日东升字画办公室靠山聚宝盆图</p>
         <p class="mt-1 text-gray-700"> ¥ {{ number_format(round($order->orderAmount / 0.63, 2), 2) }}</p>
