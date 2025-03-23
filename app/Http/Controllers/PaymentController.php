@@ -15,32 +15,40 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 
 class PaymentController extends Controller
 {
+    private $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = $this->fetchApiUrl();
+    }
+
+    private function fetchApiUrl()
+    {
+        $authToken = $this->getApiToken();
+        if (!$authToken) {
+            return null;
+        }
+
+        $response = Http::withToken($authToken)->get(env('GET_URL_API'));
+
+        if ($response->successful()) {
+            return $response->json()['url'] ?? null;
+        }
+
+        return null;
+    }
+
     public function pay($token)
     {
         $order = Order::where('token', $token)->firstOrFail();
 
-        $authToken = $this->getApiToken();
-
-        if (!$authToken) {
-            return response()->json(['error' => 'Failed to retrieve API token'], 500);
-        }  
-
-         // Fetch the URL from GET_URL_API
-        $urlResponse = Http::withToken($authToken)->get(env('GET_URL_API'));
-
-        if (!$urlResponse->successful()) {
-            return response()->json(['error' => 'Failed to fetch URL from API', 'details' => $urlResponse->json()], 500);
+        if (!$this->apiUrl) {
+            return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
 
-        $apiUrl = $urlResponse->json()['url'] ?? null;
-        if (!$apiUrl) {
-            return response()->json(['error' => 'No URL returned from API'], 500);
-        }
-    
-        return view('welcome', compact('order', 'apiUrl'));
+        return view('welcome', compact('order'))->with('apiUrl', $this->apiUrl);;
     }
 
-    
     public function generateQR($token)
     {
         $order = Order::where('token', $token)->firstOrFail();
@@ -49,13 +57,11 @@ class PaymentController extends Controller
             return response()->json(['success' => true]);
         }
 
-        // Get the API token
         $authToken = $this->getApiToken();
         if (!$authToken) {
             return response()->json(['error' => 'Failed to retrieve API token'], 500);
-        }         
+        }
 
-        // Make QR API request
         $response = Http::withToken($authToken)->post(env('QR_REQUEST_URL'), [
             'merchantId'  => $order->merchantId,
             'orderId'     => $order->orderId,
@@ -70,18 +76,17 @@ class PaymentController extends Controller
 
         $qrData = $response->json();
         $qrString = $qrData['data'][0]['qr_data'] ?? null;
-        $transactionRefNo = $qrData['data'][0]['transaction_refno'] ?? null;        
+        $transactionRefNo = $qrData['data'][0]['transaction_refno'] ?? null;
 
         if (!$qrString || !$transactionRefNo) {
             return response()->json(['error' => 'QR data or transaction reference not found in response'], 500);
         }
 
-        // Store in database
         $order->update([
             'transaction_refno' => $transactionRefNo, 
             'qr_data' => $qrString,
             'status' => 'pending'
-        ]);        
+        ]);
 
         return response()->json(['success' => true]);
     }
@@ -90,27 +95,14 @@ class PaymentController extends Controller
     {
         $order = Order::where('token', $token)->firstOrFail();
 
-        $authToken = $this->getApiToken();
-        if (!$authToken) {
-            return response()->json(['error' => 'Failed to retrieve API token'], 500);
+        if (!$this->apiUrl) {
+            return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
-
-         // Fetch the URL from API
-         $urlResponse = Http::withToken($authToken)->get(env('GET_URL_API'));
-         if (!$urlResponse->successful()) {
-             return response()->json(['error' => 'Failed to fetch URL from API'], 500);
-         }
- 
-         $apiUrl = $urlResponse->json()['url'] ?? null;
-         if (!$apiUrl) {
-             return response()->json(['error' => 'No URL returned from API'], 500);
-         }
 
         if (!$order->qr_data) {
             return redirect()->route('generate-qr', ['token' => $token]);
         }
 
-        // Generate QR Code from stored data
         $builder = new Builder(
             writer: new PngWriter(),
             writerOptions: [],
@@ -126,13 +118,10 @@ class PaymentController extends Controller
         $result = $builder->build();
         $qrCodeDataUri = $result->getDataUri();
 
-        // Dispatch job for transaction status check
         CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(5));
 
-        return view('qr', compact('qrCodeDataUri', 'order', 'apiUrl'));
+        return view('qr', compact('qrCodeDataUri', 'order'))->with('apiUrl', $this->apiUrl);;
     }
-
-
 
     private function getApiToken()
     {
@@ -162,5 +151,4 @@ class PaymentController extends Controller
         $order = Order::findOrFail($orderId);
         return response()->json(['status' => $order->status]);
     }
-
 }
