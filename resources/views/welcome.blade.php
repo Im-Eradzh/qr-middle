@@ -46,7 +46,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        let countdown = 5;
+                        let countdown = 3;
                         button.innerText = `${countdown} 秒后跳转...`;
 
                         let interval = setInterval(() => {
