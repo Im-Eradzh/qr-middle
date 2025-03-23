@@ -100,6 +100,7 @@ class PaymentController extends Controller
         if (!$this->apiUrl) {
             return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
+        
         $apiUrl = $this->apiUrl;
 
         if (!$order->qr_data) {
