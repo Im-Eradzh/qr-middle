@@ -40,13 +40,13 @@ class PaymentController extends Controller
 
     public function pay($token)
     {
-        $order = Order::where('token', $token)->firstOrFail();
+        $order = Order::where('token', $token)->firstOrFail();        
 
         if (!$this->apiUrl) {
             return response()->json(['error' => 'Failed to retrieve API URL'], 500);
         }
 
-        return view('welcome', compact('order'))->with('apiUrl', $this->apiUrl);;
+        return view('welcome', compact('order'))->with('apiUrl', $this->apiUrl);
     }
 
     public function generateQR($token)
@@ -120,7 +120,7 @@ class PaymentController extends Controller
 
         CheckTransactionStatusJob::dispatch($order, 0)->delay(now()->addSeconds(5));
 
-        return view('qr', compact('qrCodeDataUri', 'order'))->with('apiUrl', $this->apiUrl);;
+        return view('qr', compact('qrCodeDataUri', 'order'))->with('apiUrl', $this->apiUrl);
     }
 
     private function getApiToken()
