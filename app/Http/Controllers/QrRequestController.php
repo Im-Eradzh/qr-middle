@@ -30,6 +30,10 @@ class QrRequestController extends Controller
                 'returnUrl'   => 'required|url|max:255',
             ]);
 
+            $baseUrl = $request->getSchemeAndHttpHost();
+
+            dd($baseUrl);
+
             $authToken = $this->getApiToken();
 
             if (!$authToken) {
