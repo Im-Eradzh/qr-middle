@@ -28,11 +28,7 @@ class QrRequestController extends Controller
                 'channelType' => 'required|string|max:255',
                 'notifyUrl'   => 'required|url|max:255',            
                 'returnUrl'   => 'required|url|max:255',
-            ]);
-
-            $baseUrl = $request->getSchemeAndHttpHost();
-
-            dd($baseUrl);
+            ]);                        
 
             $authToken = $this->getApiToken();
 
