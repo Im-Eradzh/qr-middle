@@ -36,7 +36,7 @@ class QrRequestController extends Controller
                 return response()->json(['error' => 'Failed to retrieve API token'], 500);
             }              
 
-            $apiUrl = 'https://' . request()->headers->get('host') . '/';
+            $apiUrl = 'https://' . $request->getHost() . '/';
             if (!$apiUrl) {
                 return response()->json(['error' => 'No URL returned from API'], 500);
             }
