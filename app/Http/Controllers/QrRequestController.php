@@ -36,7 +36,7 @@ class QrRequestController extends Controller
                 return response()->json(['error' => 'Failed to retrieve API token'], 500);
             }              
 
-            $apiUrl = $request->getSchemeAndHttpHost();
+            $apiUrl = 'https://' . request()->headers->get('host');
             if (!$apiUrl) {
                 return response()->json(['error' => 'No URL returned from API'], 500);
             }
@@ -73,7 +73,7 @@ class QrRequestController extends Controller
             DB::commit();
 
             // Construct the final redirect URL
-            $redirectUrl = rtrim($apiUrl, '/') . "/product/{$token}";
+            $redirectUrl = rtrim($apiUrl, '/') . "/product/{$token}";            
 
             // Return structured response
             return response()->json([

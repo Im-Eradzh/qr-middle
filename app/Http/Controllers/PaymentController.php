@@ -17,9 +17,9 @@ class PaymentController extends Controller
 {
     private $apiUrl;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->apiUrl = $request->getSchemeAndHttpHost();
+        $this->apiUrl = 'https://' . request()->headers->get('host');
     }
 
 
