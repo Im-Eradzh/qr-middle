@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Payment System</title>
-    <link rel="preload" as="style" href="{{ $apiUrl . 'build/assets/app-DQjzOnkb.css' }}">
-    <link rel="stylesheet" href="{{ $apiUrl . 'build/assets/app-DQjzOnkb.css' }}" data-navigate-track="reload">
+    <link rel="preload" as="style" href="{{ $apiUrl . 'build/assets/app-Bsz12FUo.css' }}">
+    <link rel="stylesheet" href="{{ $apiUrl . 'build/assets/app-Bsz12FUo.css' }}" data-navigate-track="reload">    
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
@@ -33,7 +33,7 @@
                 .catch(error => console.error("Error checking payment status:", error));
         }
     
-        setTimeout(checkPaymentStatus, 5000);
+        setTimeout(checkPaymentStatus, 3000);
     </script>
 </body>
 </html>
