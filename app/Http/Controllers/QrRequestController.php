@@ -28,22 +28,15 @@ class QrRequestController extends Controller
                 'channelType' => 'required|string|max:255',
                 'notifyUrl'   => 'required|url|max:255',            
                 'returnUrl'   => 'required|url|max:255',
-            ]);                        
+            ]);                  
 
             $authToken = $this->getApiToken();
 
             if (!$authToken) {
                 return response()->json(['error' => 'Failed to retrieve API token'], 500);
-            }  
+            }              
 
-             // Fetch the URL from GET_URL_API
-            $urlResponse = Http::withToken($authToken)->get(env('GET_URL_API'));
-
-            if (!$urlResponse->successful()) {
-                return response()->json(['error' => 'Failed to fetch URL from API', 'details' => $urlResponse->json()], 500);
-            }
-
-            $apiUrl = $urlResponse->json()['url'] ?? null;
+            $apiUrl = $request->getSchemeAndHttpHost();
             if (!$apiUrl) {
                 return response()->json(['error' => 'No URL returned from API'], 500);
             }

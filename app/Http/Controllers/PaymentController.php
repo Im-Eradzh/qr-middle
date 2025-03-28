@@ -17,26 +17,11 @@ class PaymentController extends Controller
 {
     private $apiUrl;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->apiUrl = $this->fetchApiUrl();
+        $this->apiUrl = $request->getSchemeAndHttpHost();
     }
 
-    private function fetchApiUrl()
-    {
-        $authToken = $this->getApiToken();
-        if (!$authToken) {
-            return null;
-        }
-
-        $response = Http::withToken($authToken)->get(env('GET_URL_API'));
-
-        if ($response->successful()) {
-            return $response->json()['url'] ?? null;
-        }
-
-        return null;
-    }
 
     public function pay($token)
     {
