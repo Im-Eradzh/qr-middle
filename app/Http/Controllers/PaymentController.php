@@ -19,7 +19,7 @@ class PaymentController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->apiUrl = 'https://' . $request->getHost() . '/';
+        $this->apiUrl = 'https://' . $request->header('X-Forwarded-Host', $request->getHost()) . '/';
     }
 
 
