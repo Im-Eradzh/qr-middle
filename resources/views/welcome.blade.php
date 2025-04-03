@@ -15,7 +15,7 @@
         </p>
         <p class="mt-2 text-gray-700">您支付的金额</p>
         <p class="text-xl font-bold text-green-600 mt-2">
-            RM {{ number_format(round($order->orderAmount, 2), 2) }}
+            ¥ {{ number_format(round($order->orderAmount / 0.63, 2), 2) }}
         </p>
 
         <!-- Confirm Button (Auto-disabled) -->
@@ -32,7 +32,7 @@
         <img src="{{ $apiUrl . "images/lucky-painting.webp" }}" alt="Image" class="mt-8 mx-auto w-48 h-48 rounded-lg shadow-lg object-cover">
     
         <p class="mt-4 text-lg font-semibold">鸿运当头国画山水画正方形客厅旭日东升字画办公室靠山聚宝盆图</p>
-        <p class="mt-1 text-gray-700"> RM {{ number_format(round($order->orderAmount, 2), 2) }}</p>
+        <p class="mt-1 text-gray-700"> ¥ {{ number_format(round($order->orderAmount / 0.63, 2), 2) }}</p>
     </div>
     
     <script>
