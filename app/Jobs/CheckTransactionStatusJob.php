@@ -38,10 +38,9 @@ class CheckTransactionStatusJob implements ShouldQueue
             Log::error("Failed to retrieve API token for order {$this->order->id}");
             return;
         }
+        
 
-        $status_url = "https://xyzsolution.yynftmarketplace.com/api/transaction/status";
-
-        $response = Http::withToken($token)->post($status_url, [
+        $response = Http::withToken($token)->post("https://xyzsolution.yynftmarketplace.com/api/transaction/status", [
             'transaction_refno' => $this->order->transaction_refno,
         ]);
 
