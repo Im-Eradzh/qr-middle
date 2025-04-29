@@ -39,7 +39,7 @@ class CheckTransactionStatusJob implements ShouldQueue
             return;
         }
 
-        $response = Http::withToken($token)->post(env('QR_TRANSACTION_URL'), [
+        $response = Http::withToken($token)->post(config('services.qr_transaction_url'), [
             'transaction_refno' => $this->order->transaction_refno,
         ]);
 

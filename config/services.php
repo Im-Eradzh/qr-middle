@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    'qr_transaction_url' => env('QR_TRANSACTION_URL'),
+
 ];
