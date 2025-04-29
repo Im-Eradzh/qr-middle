@@ -11,7 +11,7 @@
         
     <div class="text-center mt-4 max-w-sm mx-auto px-4">
         <p class="text-base sm:text-lg font-medium whitespace-nowrap overflow-hidden"> 
-            感谢您购买我们的产品。请确认您的订单正确无误。
+            正在跳转，请耐心等待
         </p>
         <p class="mt-2 text-gray-700">您支付的金额</p>
         <p class="text-xl font-bold text-green-600 mt-2">

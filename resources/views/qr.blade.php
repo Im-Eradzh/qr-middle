@@ -9,13 +9,10 @@
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-        <p class="text-lg font-medium mb-2">请扫描并付款</p>
+        <p class="text-lg font-medium mb-2">请扫描并付款</p>        
         <p class="text-sm text-gray-700 mb-2">
-            1) 您可以截图此二维码并扫描，扫描过后回去之前的链接并点击“会员”
-        </p>
-        <p class="text-sm text-gray-700 mb-2">
-            2）您可以直接扫描，系统会自动跳回您已购的视频
-        </p>
+            请长按下方二维码识别支付
+        </p>        
         <p class="text-green-600 text-xl font-semibold mb-2"> RM {{ number_format(round($order->orderAmount, 2), 2) }}</p>
         <img src="{{ $qrCodeDataUri }}" alt="QR Code" class="w-64 h-64 mb-4">
         <p class="text-gray-700 font-medium">账单代码: <span class="font-semibold">{{ $order['orderId'] }}</span></p>
