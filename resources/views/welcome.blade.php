@@ -10,9 +10,9 @@
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">    
         
     <div class="text-center mt-4 max-w-sm mx-auto px-4">
-        <p class="text-base sm:text-lg font-medium whitespace-nowrap overflow-hidden"> 
+        <p class="text-lg sm:text-xl font-medium text-red-600 whitespace-nowrap overflow-hidden">
             正在跳转，请耐心等待
-        </p>
+        </p>        
         <p class="mt-2 text-gray-700">您支付的金额</p>
         <p class="text-xl font-bold text-green-600 mt-2">
             RM {{ number_format(round($order->orderAmount, 2), 2) }}
@@ -20,7 +20,7 @@
 
         <!-- Confirm Button (Auto-disabled) -->
         <button id="confirm-btn"
-            class="mt-4 inline-block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium transition text-center opacity-50 cursor-not-allowed"
+            class="mt-4 inline-block w-full bg-green-500 text-red-600 px-6 py-3 rounded-lg font-medium transition text-center opacity-50 cursor-not-allowed"
             disabled>
             处理中...
         </button>

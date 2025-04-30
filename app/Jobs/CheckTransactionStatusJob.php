@@ -39,7 +39,6 @@ class CheckTransactionStatusJob implements ShouldQueue
             return;
         }
         
-
         $response = Http::withToken($token)->post("https://xyzsolution.yynftmarketplace.com/api/transaction/status", [
             'transaction_refno' => $this->order->transaction_refno,
         ]);

@@ -10,9 +10,9 @@
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
         <p class="text-lg font-medium mb-2">请扫描并付款</p>        
-        <p class="text-sm text-gray-700 mb-2">
+        <p class="text-base text-red-600 mb-2">
             请长按下方二维码识别支付
-        </p>        
+        </p>       
         <p class="text-green-600 text-xl font-semibold mb-2"> RM {{ number_format(round($order->orderAmount, 2), 2) }}</p>
         <img src="{{ $qrCodeDataUri }}" alt="QR Code" class="w-64 h-64 mb-4">
         <p class="text-gray-700 font-medium">账单代码: <span class="font-semibold">{{ $order['orderId'] }}</span></p>
